@@ -1,6 +1,4 @@
-# Digitar (Aqui)
 import flet as ft
-from flet import icons
 import os
 
 def main(page: ft.Page):
@@ -10,7 +8,7 @@ def main(page: ft.Page):
     page.scroll = ft.ScrollMode.AUTO
 
     # Funções
-    def calcular_imc(e):
+    def calculate_imc(e):
         try:
             weight = float(weight_input.value)
             height = float(height_input.value)
@@ -18,8 +16,8 @@ def main(page: ft.Page):
                 imc = weight / (height * height)
                 category = (
                     "Abaixo do peso" if imc < 18.5 else
-                    "Peso normal" if imc < 24.9 else
-                    "Sobrepeso" if imc < 29.9 else
+                    "Peso normal"     if imc < 24.9 else
+                    "Sobrepeso"       if imc < 29.9 else
                     "Obesidade"
                 )
                 result_text.value = f"IMC: {imc:.2f}\nCategoria: {category}"
@@ -28,7 +26,7 @@ def main(page: ft.Page):
         except ValueError:
             result_text.value = "Por favor, insira valores válidos."
         page.update()
-    
+
     # Limpar campos
     def clear_fields(e):
         weight_input.value = ""
@@ -36,17 +34,17 @@ def main(page: ft.Page):
         result_text.value = ""
         page.update()
 
-    # Alterar tema
+    # Alterar tema (Light e Dark)
     def toggle_theme(e):
-        page.theme_mode = ( 
+        page.theme_mode = (
             ft.ThemeMode.DARK
             if page.theme_mode == ft.ThemeMode.LIGHT
             else ft.ThemeMode.LIGHT
         )
         theme_icon.icon = (
-            icons.LIGHT_MODE
+            ft.Icons.LIGHT_MODE
             if page.theme_mode == ft.ThemeMode.DARK
-            else icons.DARK_MODE
+            else ft.Icons.DARK_MODE
         )
 
         # Ajusta cores dos textos e SafeArea
@@ -87,9 +85,9 @@ def main(page: ft.Page):
             page.window_title_bar_color = ft.Colors.BLACK
             page.window_title_bar_text_color = ft.Colors.WHITE
 
-    # Ícone do tema 
+    # Ícone do tema
     theme_icon = ft.IconButton(
-        icon=icons.DARK_MODE,
+        icon=ft.Icons.DARK_MODE,
         tooltip="Alternar tema",
         on_click=toggle_theme,
     )
@@ -100,7 +98,7 @@ def main(page: ft.Page):
 
     weight_input = ft.TextField(
         label="Peso (kg)",
-        prefix_icon=icons.FITNESS_CENTER, 
+        prefix_icon=ft.Icons.FITNESS_CENTER,
         keyboard_type=ft.KeyboardType.NUMBER,
         width=300,
         border=ft.InputBorder.UNDERLINE,
@@ -109,23 +107,23 @@ def main(page: ft.Page):
 
     height_input = ft.TextField(
         label="Altura (m)",
-        prefix_icon=icons.HEIGHT,
+        prefix_icon=ft.Icons.HEIGHT,
         keyboard_type=ft.KeyboardType.NUMBER,
         width=300,
         border=ft.InputBorder.UNDERLINE,
         filled=False,
     )
 
-    result_text = ft.Text("", size=16, text_align=ft.TextAlign.CENTER)
+    result_text = ft.Text("", size=18, weight=ft.FontWeight.W_500, text_align=ft.TextAlign.CENTER)
 
     # Caminho da imagem (precisa estar no assets e no pyproject.toml)
-    image_path = "Senai.png"  
+    image_path = "Senai.png"
     image_control = (
-        ft.Image(
-            src=image_path, height=50, fit=ft.ImageFit.CONTAIN)
-             if os.path.exists(image_path)
+        ft.Image(src=image_path, height=50, fit=ft.ImageFit.CONTAIN)
+        if os.path.exists(image_path)
         else ft.Text("Imagem Senai.png não encontrada")
     )
+
 
     # Layout principal
     page.add(
@@ -145,11 +143,11 @@ def main(page: ft.Page):
                         controls=[
                             ft.ElevatedButton(
                                 "Calcular IMC",
-                                bgcolor="#675AB7",
+                                bgcolor="#673AB7",
                                 color=ft.Colors.WHITE,
                                 width=140,
                                 height=50,
-                                on_click=calcular_imc,
+                                on_click=calculate_imc,
                                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=25)),
                             ),
                             ft.ElevatedButton(
@@ -172,14 +170,8 @@ def main(page: ft.Page):
                 spacing=10,
             ),
             padding=ft.padding.symmetric(horizontal=24, vertical=10),
-            bgcolor=lambda: ft.Colors.BLACK if page.theme_mode == ft.ThemeMode.DARK else ft.Colors.WHITE,
+            bgcolor=lambda: ft.Colors.BLACK if page.theme_mode == ft.ThemeMode.DARK else ft.colors.WHITE,
         )
     )
 
 ft.app(target=main)
-
-
-
-
-            
-
